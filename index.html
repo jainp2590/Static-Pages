@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="gate-locked">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -12,8 +12,117 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css">
+  <style>
+    html.gate-locked,
+    body.gate-locked {
+      overflow: hidden !important;
+      height: 100%;
+      width: 100%;
+      overscroll-behavior: none;
+    }
+
+    body.gate-locked {
+      position: fixed;
+      inset: 0;
+      touch-action: none;
+    }
+  </style>
 </head>
-<body>
+<body class="gate-locked">
+  <!-- Heart-shaped entry gate -->
+  <div class="heart-gate" id="heart-gate" role="dialog" aria-modal="true" aria-label="Heart gate">
+    <div class="heart-gate__backdrop"></div>
+
+    <div class="heart-gate__stage">
+      <div class="heart-gate__heart-wrap">
+        <svg class="heart-gate__heart" viewBox="0 0 200 185" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heart-gate-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e11d48"/>
+              <stop offset="50%" stop-color="#f43f5e"/>
+              <stop offset="100%" stop-color="#fb7185"/>
+            </linearGradient>
+            <linearGradient id="heart-gate-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.2)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <clipPath id="heart-gate-left-half">
+              <rect x="0" y="0" width="100" height="185"/>
+            </clipPath>
+            <clipPath id="heart-gate-right-half">
+              <rect x="100" y="0" width="100" height="185"/>
+            </clipPath>
+          </defs>
+
+          <g class="heart-gate__panel heart-gate__panel--left" clip-path="url(#heart-gate-left-half)">
+            <path
+              class="heart-gate__shape"
+              d="M100,175 C100,175 15,115 15,65 C15,35 35,15 60,15 C75,15 88,28 100,42 C112,28 125,15 140,15 C165,15 185,35 185,65 C185,115 100,175 100,175 Z"
+              fill="url(#heart-gate-fill)"
+            />
+            <path
+              class="heart-gate__shine"
+              d="M100,175 C100,175 15,115 15,65 C15,35 35,15 60,15 C75,15 88,28 100,42 C112,28 125,15 140,15 C165,15 185,35 185,65 C185,115 100,175 100,175 Z"
+              fill="url(#heart-gate-shine)"
+            />
+          </g>
+
+          <g class="heart-gate__panel heart-gate__panel--right" clip-path="url(#heart-gate-right-half)">
+            <path
+              class="heart-gate__shape"
+              d="M100,175 C100,175 15,115 15,65 C15,35 35,15 60,15 C75,15 88,28 100,42 C112,28 125,15 140,15 C165,15 185,35 185,65 C185,115 100,175 100,175 Z"
+              fill="url(#heart-gate-fill)"
+            />
+            <path
+              class="heart-gate__shine"
+              d="M100,175 C100,175 15,115 15,65 C15,35 35,15 60,15 C75,15 88,28 100,42 C112,28 125,15 140,15 C165,15 185,35 185,65 C185,115 100,175 100,175 Z"
+              fill="url(#heart-gate-shine)"
+            />
+          </g>
+
+          <path
+            class="heart-gate__outline"
+            d="M100,175 C100,175 15,115 15,65 C15,35 35,15 60,15 C75,15 88,28 100,42 C112,28 125,15 140,15 C165,15 185,35 185,65 C185,115 100,175 100,175 Z"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.35)"
+            stroke-width="1.5"
+          />
+        </svg>
+
+        <button type="button" class="heart-gate__unlock" id="gate-unlock">
+          <svg class="heart-gate__lock-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect
+              x="5"
+              y="11"
+              width="14"
+              height="10"
+              rx="2"
+              stroke="currentColor"
+              stroke-width="1.75"
+            />
+            <path
+              d="M8 11V8a4 4 0 0 1 8 0v3"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="heart-gate__unlock-text">Unlock</span>
+        </button>
+      </div>
+
+      <div class="heart-gate__content">
+        <p class="heart-gate__eyebrow">For your eyes only</p>
+        <h2 class="heart-gate__title">Unlock My Heart</h2>
+        <p class="heart-gate__subtitle">A love letter is waiting inside</p>
+      </div>
+    </div>
+
+    <div class="heart-gate__sparkles" aria-hidden="true">
+      <span>✨</span><span>💕</span><span>✨</span><span>💖</span><span>✨</span>
+    </div>
+  </div>
+
   <div class="hearts-bg" aria-hidden="true"></div>
   <div class="cursor-glow" aria-hidden="true"></div>
 

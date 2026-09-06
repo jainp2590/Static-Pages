@@ -1,6 +1,92 @@
 (function () {
   'use strict';
 
+  /* ===== Heart gate unlock ===== */
+  const heart_gate = document.getElementById('heart-gate');
+  const gate_unlock = document.getElementById('gate-unlock');
+  let gate_is_opening = false;
+  let scroll_position = 0;
+
+  function preventGateScroll(event) {
+    if (gate_is_opening) return;
+    event.preventDefault();
+  }
+
+  function preventGateKeys(event) {
+    if (gate_is_opening) return;
+
+    const scroll_keys = [
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      'PageUp', 'PageDown', 'Home', 'End', ' ',
+    ];
+
+    if (scroll_keys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  function lockPageScroll() {
+    scroll_position = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.classList.add('gate-locked');
+    document.body.classList.add('gate-locked');
+    document.body.style.top = `-${scroll_position}px`;
+  }
+
+  function unlockPageScroll() {
+    document.documentElement.classList.remove('gate-locked');
+    document.body.classList.remove('gate-locked');
+    document.body.style.top = '';
+    document.removeEventListener('touchmove', preventGateScroll);
+    document.removeEventListener('wheel', preventGateScroll);
+    document.removeEventListener('keydown', preventGateKeys);
+    window.scrollTo(0, scroll_position);
+  }
+
+  if (heart_gate) {
+    lockPageScroll();
+    document.addEventListener('touchmove', preventGateScroll, { passive: false });
+    document.addEventListener('wheel', preventGateScroll, { passive: false });
+    document.addEventListener('keydown', preventGateKeys);
+  }
+
+  function openHeartGate() {
+    if (!heart_gate || gate_is_opening) return;
+
+    gate_is_opening = true;
+    unlockPageScroll();
+    heart_gate.classList.add('heart-gate--opening');
+
+    const lock_icon = heart_gate.querySelector('.heart-gate__lock-icon');
+    if (lock_icon) {
+      lock_icon.innerHTML = `
+        <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.75"/>
+        <path d="M12 15v2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      `;
+    }
+
+    const unlock_text = heart_gate.querySelector('.heart-gate__unlock-text');
+    if (unlock_text) {
+      unlock_text.textContent = 'Opening...';
+    }
+
+    if (gate_unlock) {
+      gate_unlock.disabled = true;
+    }
+
+    setTimeout(() => {
+      heart_gate.classList.add('heart-gate--hidden');
+      heart_gate.setAttribute('aria-hidden', 'true');
+
+      setTimeout(() => {
+        heart_gate.remove();
+      }, 400);
+    }, 1200);
+  }
+
+  if (gate_unlock) {
+    gate_unlock.addEventListener('click', openHeartGate);
+  }
+
   /* ===== Cursor glow (desktop only) ===== */
   const cursor_glow = document.querySelector('.cursor-glow');
   if (cursor_glow && window.matchMedia('(pointer: fine)').matches) {
